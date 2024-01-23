@@ -3,37 +3,58 @@ using System;
 
 public partial class player : CharacterBody2D
 {
-	public const float Speed = 300.0f;
-	public const float JumpVelocity = -400.0f;
+	[Export]
+	public float MaxSpeed = 1000.0f;
+	
+	[Export]
+	public float Acceleration = 20.0f;
 
-	// Get the gravity from the project settings to be synced with RigidBody nodes.
-	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+	[Export]
+	public float RotationSpeed = 10.0f;
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector2 velocity = Velocity;
+		int direction = Input.IsActionPressed("Forward") ? -1 : 0;
+		Vector2 inputVector = new Vector2(0, direction);
 
-		// Add the gravity.
-		if (!IsOnFloor())
-			velocity.Y += gravity * (float)delta;
+		Velocity += inputVector.Rotated(Rotation) * Acceleration;
+		Velocity = Velocity.LimitLength(MaxSpeed);
 
-		// Handle Jump.
-		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-			velocity.Y = JumpVelocity;
-
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		if (direction != Vector2.Zero)
+		if (direction == 0)
 		{
-			velocity.X = direction.X * Speed;
-		}
-		else
-		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+			Velocity = Velocity.MoveToward(Vector2.Zero, 3);
 		}
 
-		Velocity = velocity;
+		if (Input.IsActionPressed("TurnLeft"))
+		{
+			Rotate(-(RotationSpeed * (float)delta));
+		}
+		if (Input.IsActionPressed("TurnRight"))
+		{
+			Rotate(RotationSpeed * (float)delta);
+		}
+		
+		Vector2 screenSize = GetViewportRect().Size;
+		var playerPosition = GlobalPosition;
+		
+		if (playerPosition.X < 0)
+		{
+			GlobalPosition = new Vector2(screenSize.X, playerPosition.Y);
+		}
+		if (playerPosition.X > screenSize.X)
+		{
+			GlobalPosition = new Vector2(0, playerPosition.Y);
+		}
+
+		if (playerPosition.Y < 0)
+		{
+			GlobalPosition = new Vector2(playerPosition.X, screenSize.Y);
+		}
+		if (playerPosition.Y > screenSize.Y)
+		{
+			GlobalPosition = new Vector2(playerPosition.X, 0);
+		}
+
 		MoveAndSlide();
 	}
 }
