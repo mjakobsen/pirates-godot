@@ -11,6 +11,27 @@ public partial class player : CharacterBody2D
 
 	[Export]
 	public float RotationSpeed = 10.0f;
+	
+	[Export]
+	public PackedScene SceneLoader { get; set; }
+
+	public Node2D Muzzle = new Node2D();
+
+	[Signal]
+	public delegate void LaserFiredEventHandler(laser laser);
+
+	public override void _Ready()
+	{
+		Muzzle = GetNode<Node2D>("Muzzle");
+	}
+
+	public override void _Process(double delta)
+	{
+		if (Input.IsActionJustPressed("Fire"))
+		{
+			ShootLaser();
+		}
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -56,5 +77,13 @@ public partial class player : CharacterBody2D
 		}
 
 		MoveAndSlide();
+	}
+	
+	public void ShootLaser()
+	{
+		laser laser = SceneLoader.Instantiate<laser>();
+		laser.GlobalPosition = Muzzle.GlobalPosition;
+		laser.Rotation = Rotation;
+		EmitSignal(SignalName.LaserFired, laser);
 	}
 }
