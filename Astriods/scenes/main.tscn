@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bsq2ntm1qfrh8" path="res://scenes/player.tscn" id="1_ggfct"]
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_kv74g"]
-[ext_resource type="PackedScene" uid="uid://djevyyoj4ecwx" path="res://scenes/laser.tscn" id="2_y0pjx"]
+[ext_resource type="PackedScene" uid="uid://bypmvld8ce7ar" path="res://scenes/asteroid.tscn" id="4_sdqpw"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_kv74g")
@@ -10,7 +10,7 @@ script = ExtResource("1_kv74g")
 [node name="Player" parent="." instance=ExtResource("1_ggfct")]
 position = Vector2(982, 481)
 
-[node name="Laser" parent="." instance=ExtResource("2_y0pjx")]
-position = Vector2(530, 481)
-
 [node name="Lasers" type="Node" parent="."]
+
+[node name="Asteroid" parent="." instance=ExtResource("4_sdqpw")]
+position = Vector2(756, 321)
