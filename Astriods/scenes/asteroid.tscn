@@ -7,7 +7,6 @@
 [node name="Asteroid" type="Area2D"]
 scale = Vector2(1.8, 1.8)
 script = ExtResource("1_tmk1k")
-Size = 0
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

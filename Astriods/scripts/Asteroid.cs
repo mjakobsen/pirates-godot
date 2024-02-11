@@ -6,7 +6,7 @@ public partial class Asteroid : Area2D
 	public AsteroidSize Size = AsteroidSize.Large;
 	
 	public Vector2 Movement = new Vector2(0, -1);
-	public float Speed = 60;
+	public float Speed = 600;
 	public Sprite2D Sprite;
 	public CollisionShape2D Shape;
 	
@@ -40,25 +40,26 @@ public partial class Asteroid : Area2D
 		float y = GlobalPosition.Y + Movement.Rotated(RotationDegrees).Y * Speed * (float)delta;
 		GlobalPosition = new Vector2(x, y);
 		
+		float diameter = ((CircleShape2D)Shape.Shape).Radius * 2;
 		Vector2 screenSize = GetViewportRect().Size;
 		var astroidPosition = GlobalPosition;
 		
-		if (astroidPosition.X < 0)
+		if (astroidPosition.X + diameter < 0)
 		{
-			GlobalPosition = new Vector2(screenSize.X, astroidPosition.Y);
+			GlobalPosition = new Vector2(screenSize.X + diameter, astroidPosition.Y);
 		}
-		if (astroidPosition.X > screenSize.X)
+		if (astroidPosition.X - diameter > screenSize.X)
 		{
-			GlobalPosition = new Vector2(0, astroidPosition.Y);
+			GlobalPosition = new Vector2(0 - diameter, astroidPosition.Y);
 		}
 
-		if (astroidPosition.Y < 0)
+		if (astroidPosition.Y + diameter < 0)
 		{
-			GlobalPosition = new Vector2(astroidPosition.X, screenSize.Y);
+			GlobalPosition = new Vector2(astroidPosition.X, screenSize.Y + diameter);
 		}
-		if (astroidPosition.Y > screenSize.Y)
+		if (astroidPosition.Y - diameter > screenSize.Y)
 		{
-			GlobalPosition = new Vector2(astroidPosition.X, 0);
+			GlobalPosition = new Vector2(astroidPosition.X, 0 - diameter);
 		}
 	}
 	
