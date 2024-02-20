@@ -36,11 +36,25 @@ public partial class Main : Node
 	
 	public void OnAsteroidTimerExpired()
 	{
-		GD.Print("Spawn asteroid");
 		Vector2 screenSize = GetTree().Root.Size;
 		float x = (float)GD.RandRange(0, screenSize.X);
 		float y = (float)GD.RandRange(0, screenSize.Y);
 		SpawnAsteroid(new Vector2(x, y), AsteroidSize.Large);
+	}
+	
+	public void OnAsteroidExploded(Asteroid asteroid)
+	{
+		switch (asteroid.Size)
+		{
+			case AsteroidSize.Large:
+				SpawnAsteroid(asteroid.Position, AsteroidSize.Medium);
+				SpawnAsteroid(asteroid.Position, AsteroidSize.Medium);
+				break;
+			case AsteroidSize.Medium:
+				SpawnAsteroid(asteroid.Position, AsteroidSize.Small);
+				SpawnAsteroid(asteroid.Position, AsteroidSize.Small);
+				break;
+		}
 	}
 	
 	public void SpawnAsteroid(Vector2 position, AsteroidSize size)
@@ -48,6 +62,7 @@ public partial class Main : Node
 		Asteroid asteroid = AsteroidScene.Instantiate<Asteroid>();
 		asteroid.GlobalPosition = position;
 		asteroid.Size = size;
+		asteroid.AsteroidExploded += OnAsteroidExploded;
 		Asteroids.AddChild(asteroid);
 	}
 }

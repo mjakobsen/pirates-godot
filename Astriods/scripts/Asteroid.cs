@@ -5,6 +5,9 @@ public partial class Asteroid : Area2D
 	[Export]
 	public AsteroidSize Size = AsteroidSize.Large;
 	
+	[Signal]
+	public delegate void AsteroidExplodedEventHandler(Asteroid asteroid);
+	
 	public Vector2 Movement = new Vector2(0, -1);
 	public float Speed = 600;
 	public Sprite2D Sprite;
@@ -68,10 +71,11 @@ public partial class Asteroid : Area2D
 	
 	public void OnAreaEntered(Area2D area)
 	{
-		// Replace with function body.
 		if(area is laser laser)
 		{
-			QueueFree();	
+			EmitSignal(SignalName.AsteroidExploded, this);
+			QueueFree();
+			laser.OnScreenExited();
 		}
 	}
 }
