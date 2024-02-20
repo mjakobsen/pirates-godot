@@ -6,6 +6,7 @@
 
 [node name="Main" type="Node"]
 script = ExtResource("1_kv74g")
+AsteroidScene = ExtResource("4_sdqpw")
 
 [node name="Player" parent="." instance=ExtResource("1_ggfct")]
 position = Vector2(982, 481)
@@ -14,3 +15,11 @@ position = Vector2(982, 481)
 
 [node name="Asteroid" parent="." instance=ExtResource("4_sdqpw")]
 position = Vector2(756, 321)
+
+[node name="Asteroids" type="Node" parent="."]
+
+[node name="AsteroidTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="AsteroidTimer" to="." method="OnAsteroidTimerExpired"]
