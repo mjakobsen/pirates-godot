@@ -17,3 +17,4 @@ texture = ExtResource("2_ka60d")
 shape = ExtResource("3_ylblb")
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]

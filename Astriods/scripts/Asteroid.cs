@@ -38,6 +38,26 @@ public partial class Asteroid : Area2D
 				Shape.Shape = GD.Load<Shape2D>("res://resources/cshape_asteroid_small.tres");
 				break;
 		}
+		
+		if (Size == AsteroidSize.Large)
+		{
+			int entrySide = (int)GD.Randi() % 3;
+			switch (entrySide)
+			{
+				case 0:
+					GlobalPosition = new Vector2(GlobalPosition.X, -10000);
+					break;
+				case 1:
+					GlobalPosition = new Vector2(10000, GlobalPosition.Y);
+					break;
+				case 2:
+					GlobalPosition = new Vector2(GlobalPosition.X, 10000);
+					break;
+				case 3:
+					GlobalPosition = new Vector2(-10000, GlobalPosition.Y);
+					break;
+			}
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -75,7 +95,15 @@ public partial class Asteroid : Area2D
 		{
 			EmitSignal(SignalName.AsteroidExploded, this);
 			QueueFree();
-			laser.OnScreenExited();
+			laser.Hit();
+		}
+	}
+	
+	public void OnBodyEntered(Node2D body)
+	{
+		if (body is player player)
+		{
+			player.Die();
 		}
 	}
 }

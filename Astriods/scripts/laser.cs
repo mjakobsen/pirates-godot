@@ -16,4 +16,9 @@ public partial class laser : Area2D
 	{
 		QueueFree();
 	}
+	
+	public void Hit()
+	{
+		QueueFree();
+	}
 }

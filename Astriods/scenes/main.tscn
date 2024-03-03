@@ -1,12 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://b27ih62j084jn"]
+[gd_scene load_steps=5 format=3 uid="uid://b27ih62j084jn"]
 
 [ext_resource type="PackedScene" uid="uid://bsq2ntm1qfrh8" path="res://scenes/player.tscn" id="1_ggfct"]
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_kv74g"]
+[ext_resource type="PackedScene" uid="uid://dsohnk4sdtiyp" path="res://scenes/hud.tscn" id="3_0wy4l"]
 [ext_resource type="PackedScene" uid="uid://bypmvld8ce7ar" path="res://scenes/asteroid.tscn" id="4_sdqpw"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_kv74g")
 AsteroidScene = ExtResource("4_sdqpw")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("3_0wy4l")]
 
 [node name="Player" parent="." instance=ExtResource("1_ggfct")]
 position = Vector2(982, 481)
