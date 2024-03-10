@@ -94,4 +94,11 @@ public partial class player : CharacterBody2D
 	{
 		EmitSignal(SignalName.Died);
 	}
+	
+	public void Respawn(Vector2 position)
+	{
+		// set position
+		GlobalPosition = position;
+		Velocity = Vector2.Zero;
+	}
 }

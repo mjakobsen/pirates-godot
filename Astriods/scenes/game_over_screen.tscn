@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://cees43lhi6utm"]
+
+[ext_resource type="Script" path="res://scripts/GameOverScreen.cs" id="1_sn5oa"]
+
+[node name="GameOverScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sn5oa")
+
+[node name="GameOverText" type="Label" parent="."]
+layout_mode = 0
+offset_left = 792.0
+offset_top = 388.0
+offset_right = 884.0
+offset_bottom = 411.0
+scale = Vector2(3.94872, 3.01325)
+text = "GAME OVER"
+
+[node name="RestartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 832.0
+offset_top = 482.0
+offset_right = 897.0
+offset_bottom = 513.0
+scale = Vector2(3.92593, 4.85185)
+text = "Restart"
+
+[connection signal="pressed" from="RestartButton" to="." method="Restart"]

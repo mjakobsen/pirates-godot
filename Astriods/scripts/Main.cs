@@ -10,7 +10,14 @@ public partial class Main : Node
 	[Export]
 	PackedScene AsteroidScene { get; set; }
 	
-	Hud Hud = new Hud(); 
+	Hud Hud = new Hud();
+	
+	Node2D SpawnPosition = new Node2D();
+	Control GameOverScreen = new Control();
+	AudioStreamPlayer LaserSound = new AudioStreamPlayer();
+	AudioStreamPlayer PlayerHitSound = new AudioStreamPlayer();
+	AudioStreamPlayer AsteroidHitSound = new AudioStreamPlayer();
+	
 	int Score = 0;
 	
 	int Lives = 3;
@@ -23,7 +30,13 @@ public partial class Main : Node
 		Hud = GetNode<Hud>("UI/HUD");
 		Hud.SetScore(Score);
 		Hud.SetLives(Lives);
-	
+		
+		SpawnPosition = GetNode<Node2D>("SpawnPosition");
+		GameOverScreen = GetNode<Control>("UI/GameOverScreen");
+		LaserSound = GetNode<AudioStreamPlayer>("LaserSound");
+		PlayerHitSound = GetNode<AudioStreamPlayer>("PlayerHitSound");
+		AsteroidHitSound = GetNode<AudioStreamPlayer>("AsteroidHitSound");
+		
 		Player = GetNode<player>("Player");
 		Player.LaserFired += OnLaserFired;
 		Player.Died += OnPlayerDied;
@@ -41,6 +54,7 @@ public partial class Main : Node
 	
 	public void OnLaserFired(laser laser)
 	{
+		LaserSound.Play();
 		Lasers.AddChild(laser);
 	}
 	
@@ -53,7 +67,9 @@ public partial class Main : Node
 	}
 	
 	public void OnAsteroidExploded(Asteroid asteroid)
-	{		
+	{
+		AsteroidHitSound.Play();
+		
 		switch (asteroid.Size)
 		{
 			case AsteroidSize.Large:
@@ -76,9 +92,20 @@ public partial class Main : Node
 	
 	public void OnPlayerDied()
 	{
+		PlayerHitSound.Play();
 		Lives -= 1;
 		Hud.SetLives(Lives);
-		GD.Print(Lives);
+
+		if (Lives <= 0) 
+		{
+			Player.QueueFree();
+			GameOverScreen.Visible = true;
+		}
+		else 
+		{
+			Player.Respawn(SpawnPosition.GlobalPosition);
+		}
+		
 	}
 	
 	public void SpawnAsteroid(Vector2 position, AsteroidSize size)
